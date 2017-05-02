@@ -1,6 +1,6 @@
 <?php
-namespace App;
 
+namespace App;
 
 final class Math
 {
@@ -24,6 +24,21 @@ final class Math
         return ($a > 1) ? false : true;
     }
 
+    static function getBinaryArrayFromRest(int $dividend): array
+    {
+        $binaries = [];
+        while ($dividend >= 2) {
+            $result = intval(self::divide($dividend, 2));
+            array_push($binaries, $dividend % 2);
+
+            if ($dividend == 3 || $dividend == 2)
+                array_push($binaries, $result);
+
+            $dividend = $result;
+        }
+        return $binaries;
+    }
+
     static function isMultiple($a, $b): bool
     {
         return ($a % $b == 0);
@@ -39,7 +54,7 @@ final class Math
      * @param int $limit
      * @return array
      */
-    static function getPrimeNumbersBefore(int $limit)
+    static function getPrimeNumbersBefore(int $limit): array
     {
         for ($i = 2; $i < $limit; $i++) {
             $primes[$i] = true;
@@ -78,7 +93,7 @@ final class Math
         return true;
     }
 
-    static function getFactoringNumbers(int $number)
+    static function getFactoringNumbers(int $number): array
     {
         if (self::isPrime($number)) // implement the is_prime() function yourself
             --$number; // Subtract to get an even number, which is not a prime
@@ -94,13 +109,30 @@ final class Math
         return $candidates;
     }
 
-    static function mmc($a, $b)
+    static function mmc(int $number): array
     {
-        if ($b == 0)
-            return $a;
-        else
-            return mmc($b, $a % $b);
+        $divisors = array();
+        $dividendos = array(2, 3, 5, 7);
+
+        while ($number > 1) {
+            foreach ($dividendos as $dividendo) {
+                if ($number % $dividendo == 0) {
+                    $number = $number / $dividendo;
+                    $divisors[] = $dividendo;
+                    break;
+                }
+            }
+        }
+        return array_values(array_unique($divisors));
     }
 
+    static function gcd($num1, $num2): int
+    {
+        if ($num2 == 0)
+            return $num1;
+        else {
+            return self::gcd($num2, $num1 % $num2);
+        }
 
+    }
 }

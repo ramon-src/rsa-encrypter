@@ -9,7 +9,6 @@ class Math extends TestCase
 {
     public $rsa;
 
-
     public function test9And12isNotRelativelyPrimes()
     {
         $this->assertFalse(MathClass::relativelyPrime(9, 12));
@@ -26,18 +25,11 @@ class Math extends TestCase
         $this->assertEquals($expectedPrimeNumbers, MathClass::getPrimeNumbersBefore(8));
     }
 
-//    public function testGetFactoringNumbers()
-//    {
-//        $expectedPrimeNumbers = [0 => 2, 1 => 3];
-//        print_r(MathClass::getFactoringNumbers(24));
-//        $this->assertEquals($expectedPrimeNumbers, MathClass::getFactoringNumbers(24));
-//    }
-
-//    public function testGetFactoringNumbers()
-//    {
-//        $expectedPrimeNumbers = [0 => 2, 1 => 3];
-//        $this->assertEquals($expectedPrimeNumbers, MathClass::mmc(24,2));
-//    }
+    public function testGetFactoringNumbers()
+    {
+        $expectedPrimeNumbers = [0 => 2, 1 => 3];
+        $this->assertEquals($expectedPrimeNumbers, MathClass::mmc(24));
+    }
 
     public function test10433IsPrime()
     {
@@ -47,5 +39,16 @@ class Math extends TestCase
     public function test8IsNotPrime()
     {
         $this->assertFalse(MathClass::isPrime(8));
+    }
+
+    public function testGetBinaryArrayContaining0111()
+    {
+        $expectedArray = [
+            0 => 0,
+            1 => 1,
+            2 => 1,
+            3 => 1
+        ];
+        $this->assertEquals($expectedArray, MathClass::getBinaryArrayFromRest(14));
     }
 }

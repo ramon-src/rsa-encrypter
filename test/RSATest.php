@@ -1,17 +1,15 @@
 <?php
 
-require 'vendor/autoload.php';
-use PHPUnit\Framework\TestCase;
-use \App\RSA as RSAClass;
 
-
-class RSA extends TestCase
+class RSATest extends PHPUnit_Framework_TestCase
 {
     public $rsa;
 
     protected function setUp()
     {
-        $this->rsa = new RSAClass(3, 13);
+        $this->rsa = new RSA();
+        $this->rsa->setQ(3);
+        $this->rsa->setQ(13);
     }
 
     public function testCalcNNeedsToResultIn39()

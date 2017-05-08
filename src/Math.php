@@ -1,6 +1,5 @@
 <?php
 
-namespace App;
 
 final class Math
 {
@@ -22,6 +21,19 @@ final class Math
             $b = $t % $b;
         }
         return ($a > 1) ? false : true;
+    }
+
+    static function generatePrimes():array
+    {
+        $primes = array();
+        $count = 0;
+        for($i = 2; $i < 1000; $i++){
+            if (selff::isPrime($i)) {
+                $primes[$count] = $i;
+                $count++;
+            }
+        }
+        return $primes;
     }
 
     static function getBinaryArrayFromRest(int $dividend): array

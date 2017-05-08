@@ -5,18 +5,9 @@ require 'Math.php';
 
 class RSA
 {
-
     private $p = null, $q = null, $z = null, $n = null, $e = null, $d = null;
     private $propertiesAsArray = [];
-//
-//    public function __construct($p, $q)
-//    {
-//        $this->p = $p;
-//        $this->q = $q;
-//        $this->n = Math::multiply($this->p, $this->q);
-//        $this->z = Math::calculateZ($this->p, $this->q);
-//    }
-
+    private $numberToEncrypt = null;
 
     public function setProperties(array $session)
     {
@@ -38,6 +29,16 @@ class RSA
         return $this->e;
     }
 
+    public function setM(int $m)
+    {
+        $this->m = $m;
+    }
+
+    public function getM()
+    {
+        return $this->e;
+    }
+
     public function setP(int $p)
     {
         $this->p = $p;
@@ -46,6 +47,16 @@ class RSA
     public function setQ(int $q)
     {
         $this->q = $q;
+    }
+
+    public function getN(): int
+    {
+        return $this->n;
+    }
+
+    public function getZ(): int
+    {
+        return $this->z;
     }
 
     public function generateN()
@@ -58,15 +69,6 @@ class RSA
         $this->z = Math::calculateZ($this->p, $this->q);
     }
 
-    public function getN(): int
-    {
-        return $this->n;
-    }
-
-    public function getZ(): int
-    {
-        return $this->z;
-    }
 
     public function checkIfIsRelativelyPrime(int $e): bool
     {
@@ -94,8 +96,36 @@ class RSA
         return $this->d;
     }
 
-    public function encrypt(){
-
+    public function encrypt()
+    {
+        $binaries = Math::getBinaryArrayFromRest($this->getE());
+        $n = $this->getN();
+        $keyMemoryValue = [];
+        $keysToEliminate = [];
+        foreach ($binaries as $key => $binary) {
+            if ($key == 0) {
+                $value = $this->numberToEncrypt % $n;
+                $keyMemoryValue[$key] = $value;
+            } elseif ($key > 0) {
+                end($keyMemoryValue);
+                if (key($keyMemoryValue) == $key - 1) {
+                    $value = pow($keyMemoryValue, 2) % $n;
+                    $keyMemoryValue[$key] = $value;
+                }
+            }
+            if (!$binary) {
+                $keysToEliminate[] = $key;
+            }
+        }
+        foreach ($keysToEliminate as $key) {
+            unset($keyMemoryValue[$key]);
+        }
+        reset($keyMemoryValue);
+        $productOfValues = 1;
+        foreach ($keyMemoryValue as $value) {
+            $productOfValues *= $value;
+        }
+        return $productOfValues % n;
     }
 
     public function checkPQZNEToGenerateD(array $session)

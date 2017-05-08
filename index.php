@@ -88,7 +88,11 @@ if (!isset($_SESSION['RSA'])) {
                   <button class="btn btn-success pull-right" style="margin-top: 10px;" id="encrypt">Encrypt</button>
                 </div>
                 <br>
-                <div id="messageCrypted"></div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div id="messageCrypted"></div>
+                  </div>
+                </div>
               </div>
             </div>
             <br>

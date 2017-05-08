@@ -64,6 +64,24 @@ if(isset($_GET['genD'])){
     die(json_encode(['status' => true, 'd' => $d]));
 }
 
+if(isset($_GET['encryptMessage'])){
+    $rsa = new RSA();
+    $rsa->setProperties($_SESSION['RSA']);
+    //$rsa->setM(68);
+    $messageCrypted = $rsa->encryptText($_GET['encryptMessage']);
+    //$value = $rsa->encrypt();
+    die(json_encode(['status' => true, 'message' => "$messageCrypted"]));
+}
+
+if(isset($_GET['decryptMessage'])){
+    $rsa = new RSA();
+    $rsa->setProperties($_SESSION['RSA']);
+    //$rsa->setC(68);
+    $messageDecrypted = $rsa->decryptText($_GET['decryptMessage']);
+    //$value = $rsa->decrypt();
+    die(json_encode(['status' => true, 'message' => "$messageDecrypted"]));
+}
+
 if(isset($_GET['clean'])){
     $_SESSION['RSA'] = [];
 }

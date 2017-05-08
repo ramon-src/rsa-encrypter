@@ -5,9 +5,8 @@ require 'Math.php';
 
 class RSA
 {
-    private $p = null, $q = null, $z = null, $n = null, $e = null, $d = null;
+    private $p = null, $q = null, $z = null, $n = null, $e = null, $d = null, $m = null, $c = null;
     private $propertiesAsArray = [];
-    private $numberToEncrypt = null;
 
     public function setProperties(array $session)
     {
@@ -29,6 +28,15 @@ class RSA
         return $this->e;
     }
 
+    public function setC(int $c)
+    {
+        $this->c = $c;
+    }
+
+    public function getC()
+    {
+        return $this->c;
+    }
     public function setM(int $m)
     {
         $this->m = $m;
@@ -95,26 +103,35 @@ class RSA
         }
         return $this->d;
     }
-
-    public function encrypt()
+    public function decryptText(string $message): string{
+        $letters = explode(" ", $message);
+        $messageDecrypted = [];
+        foreach($letters as $letter){
+            $this->setC($letter);
+            $messageDecrypted[] = $this->decrypt();
+        }
+        return implode(' ', $messageDecrypted);
+    }
+    public function decrypt()
     {
-        $binaries = Math::getBinaryArrayFromRest($this->getE());
+        $binaries = Math::getBinaryArrayFromRest($this->getD());
         $n = $this->getN();
         $keyMemoryValue = [];
         $keysToEliminate = [];
         foreach ($binaries as $key => $binary) {
+            if (!$binary) {
+                $keysToEliminate[] = $key;
+            }
             if ($key == 0) {
-                $value = $this->numberToEncrypt % $n;
+                $value = fmod($this->c, $n);
                 $keyMemoryValue[$key] = $value;
             } elseif ($key > 0) {
                 end($keyMemoryValue);
                 if (key($keyMemoryValue) == $key - 1) {
-                    $value = pow($keyMemoryValue, 2) % $n;
+                    $currentValue = current($keyMemoryValue);
+                    $value = fmod(pow($currentValue, 2),$n);
                     $keyMemoryValue[$key] = $value;
                 }
-            }
-            if (!$binary) {
-                $keysToEliminate[] = $key;
             }
         }
         foreach ($keysToEliminate as $key) {
@@ -125,9 +142,50 @@ class RSA
         foreach ($keyMemoryValue as $value) {
             $productOfValues *= $value;
         }
-        return $productOfValues % n;
+        return fmod($productOfValues, $n);
     }
-
+    
+    public function encryptText(string $message): string{
+        $letters = explode(" ", $message);
+        $messageCrypted = [];
+        foreach($letters as $letter){
+            $this->setM($letter);
+            $messageCrypted[] = $this->encrypt();
+        }
+        return implode(' ', $messageCrypted);
+    }
+public function encrypt()
+    {
+        $binaries = Math::getBinaryArrayFromRest($this->getE());
+        $n = $this->getN();
+        $keyMemoryValue = [];
+        $keysToEliminate = [];
+        foreach ($binaries as $key => $binary) {
+            if (!$binary) {
+                $keysToEliminate[] = $key;
+            }
+            if ($key == 0) {
+                $value = fmod($this->m, $n);
+                $keyMemoryValue[$key] = $value;
+            } elseif ($key > 0) {
+                end($keyMemoryValue);
+                if (key($keyMemoryValue) == $key - 1) {
+                    $currentValue = current($keyMemoryValue);
+                    $value = fmod(pow($currentValue, 2),$n);
+                    $keyMemoryValue[$key] = $value;
+                }
+            }
+        }
+        foreach ($keysToEliminate as $key) {
+            unset($keyMemoryValue[$key]);
+        }
+        reset($keyMemoryValue);
+        $productOfValues = 1;
+        foreach ($keyMemoryValue as $value) {
+            $productOfValues *= $value;
+        }
+        return fmod($productOfValues, $n);
+    }
     public function checkPQZNEToGenerateD(array $session)
     {
         $this->parseSessionToProperties($session);

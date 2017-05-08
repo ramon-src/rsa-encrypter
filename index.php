@@ -38,10 +38,20 @@ if (!isset($_SESSION['RSA'])) {
                 <input id="q" type="text" name="q">
 
                 <input id="e" type="text" name="e">
-
+                
                 <button id="genNZ">genNZ</button>
                 <button id="genD">genD</button>
                 <button id="clean">Clean</button>
+
+                <textarea id="messageToCrypt" name="messageToCrypt"></textarea>
+                <button id="encrypt">Encrypt</button>
+
+                <div id="messageCrypted"></div>
+
+                <textarea id="messageToDecrypt" name="messageToDecrypt"></textarea>
+                <button id="decrypt">Decrypt</button>
+
+                <div id="messageDecrypted"></div>
             </form>
         </div>
     </div>
@@ -49,13 +59,18 @@ if (!isset($_SESSION['RSA'])) {
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script>
+var env = ['xampp', 'linux'];
+
+env['xampp'] = 'http://localhost/rsa-encrypter';
+    env['linux'] = 'http://localhost:8080';
     $('input').on('change', function (e) {
         e.preventDefault();
         var attrName = $(this).attr('name'),
             val = $(this).val();
         $.ajax({
-            url: "http://localhost:8080/src/ViewModel.php?" + attrName + "=" + val,
+            url: env['xampp']+"/src/ViewModel.php?" + attrName + "=" + val,
             method: 'GET',
+            dataType: 'json',
             success: function (response) {
                 console.log(response);
             }
@@ -65,8 +80,9 @@ if (!isset($_SESSION['RSA'])) {
     $('#genNZ').click(function (e) {
         e.preventDefault();
         $.ajax({
-            url: "http://localhost:8080/src/ViewModel.php?genNZ  ",
+            url: env['xampp']+"/src/ViewModel.php?genNZ  ",
             method: 'GET',
+            dataType: 'json',
             success: function (response) {
                 console.log(response);
             }
@@ -75,18 +91,42 @@ if (!isset($_SESSION['RSA'])) {
     $('#genD').click(function (e) {
         e.preventDefault();
         $.ajax({
-            url: "http://localhost:8080/src/ViewModel.php?genD  ",
+            url: env['xampp']+"/src/ViewModel.php?genD  ",
             method: 'GET',
+            dataType: 'json',
             success: function (response) {
                 console.log(response);
+            }
+        });
+    });
+     $('#encrypt').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: env['xampp']+"/src/ViewModel.php?encryptMessage="+$('textarea#messageToCrypt').val(),
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                $('#messageCrypted').text(JSON.stringify(response.message));
+            }
+        });
+    });
+    $('#decrypt').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: env['xampp']+"/src/ViewModel.php?decryptMessage="+$('textarea#messageToDecrypt').val(),
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                $('#messageDecrypted').text(JSON.stringify(response.message));
             }
         });
     });
     $('#clean').click(function (e) {
         e.preventDefault();
         $.ajax({
-            url: "http://localhost:8080/src/ViewModel.php?clean  ",
+            url: env['xampp']+"/src/ViewModel.php?clean  ",
             method: 'GET',
+            dataType: 'json',
             success: function (response) {
                 console.log(response);
             }

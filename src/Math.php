@@ -28,7 +28,7 @@ final class Math
         $primes = array();
         $count = 0;
         for($i = 2; $i < 1000; $i++){
-            if (selff::isPrime($i)) {
+            if (self::isPrime($i)) {
                 $primes[$count] = $i;
                 $count++;
             }

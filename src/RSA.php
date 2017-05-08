@@ -7,32 +7,32 @@ class RSA
 {
     private $p = null, $q = null, $z = null, $n = null, $e = null, $d = null, $m = null, $c = null;
     private $propertiesAsArray = [];
-
+    
     public function setProperties(array $session)
     {
         $this->parseSessionToProperties($session);
     }
-
+    
     public function getD(): int
     {
         return $this->d;
     }
-
+    
     public function setE(int $e)
     {
         $this->e = $e;
     }
-
+    
     public function getE()
     {
         return $this->e;
     }
-
+    
     public function setC(int $c)
     {
         $this->c = $c;
     }
-
+    
     public function getC()
     {
         return $this->c;
@@ -41,54 +41,54 @@ class RSA
     {
         $this->m = $m;
     }
-
+    
     public function getM()
     {
         return $this->e;
     }
-
+    
     public function setP(int $p)
     {
         $this->p = $p;
     }
-
+    
     public function setQ(int $q)
     {
         $this->q = $q;
     }
-
+    
     public function getN(): int
     {
         return $this->n;
     }
-
+    
     public function getZ(): int
     {
         return $this->z;
     }
-
+    
     public function generateN()
     {
         $this->n = Math::multiply($this->p, $this->q);
     }
-
+    
     public function generateZ()
     {
         $this->z = Math::calculateZ($this->p, $this->q);
     }
-
-
+    
+    
     public function checkIfIsRelativelyPrime(int $e): bool
     {
         return (Math::relativelyPrime($e, $this->z));
     }
-
+    
     public function generateD(): int
     {
         $isValidAndMultiple = (is_numeric($this->d)) ? true : false;
-
+        
         $sumZ = $this->z;
-
+        
         while (!$isValidAndMultiple) {
             $number = ($sumZ) + 1;
             $isValidAndMultiple = false;
@@ -154,7 +154,7 @@ class RSA
         }
         return implode(' ', $messageCrypted);
     }
-public function encrypt()
+    public function encrypt()
     {
         $binaries = Math::getBinaryArrayFromRest($this->getE());
         $n = $this->getN();
@@ -199,6 +199,10 @@ public function encrypt()
         }
     }
 
+    public function getPrimes(){
+        return json_encode(Math::generatePrimes());
+    }
+
     private function parseSessionToProperties(array $session)
     {
         foreach ($session as $key => $value) {
@@ -206,7 +210,7 @@ public function encrypt()
         }
         $this->propertiesAsArray = ['p' => $this->p, 'q' => $this->q, 'z' => $this->z, 'n' => $this->n, 'e' => $this->e, 'd' => $this->d];
     }
-
+    
     public
     function getKeyPair()
     {

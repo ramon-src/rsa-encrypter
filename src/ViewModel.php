@@ -29,7 +29,7 @@ if (isset($_GET['genNZ'])) {
         $rsa->setQ((int)$_SESSION['RSA']['q']);
         $rsa->generateN();
         $rsa->generateZ();
-
+        
         $n = $rsa->getN();
         if (!in_array($n, $_SESSION['RSA'])) {
             $_SESSION['RSA']['n'] = $n;
@@ -80,6 +80,11 @@ if(isset($_GET['decryptMessage'])){
     $messageDecrypted = $rsa->decryptText($_GET['decryptMessage']);
     //$value = $rsa->decrypt();
     die(json_encode(['status' => true, 'message' => "$messageDecrypted"]));
+}
+
+if(isset($_GET['getPrimes'])){
+    $rsa = new RSA();
+    die(json_encode(['status' => true, 'primes' =>$rsa->getPrimes()]));
 }
 
 if(isset($_GET['clean'])){

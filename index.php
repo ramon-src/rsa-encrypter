@@ -18,7 +18,7 @@ if (!isset($_SESSION['RSA'])) {
 
   <head>
     <meta charset="UTF-8">
-    <title>Teste</title>
+    <title>RSA - Algorithm</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -114,14 +114,15 @@ if (!isset($_SESSION['RSA'])) {
     </div>
 
     <script>
-      var env = ['xampp', 'linux'];
+      var env = ['xampp', 'linux', 'heroku'];
 
       env['xampp'] = 'http://localhost/rsa-encrypter';
       env['linux'] = 'http://localhost:8080';
+      env['heroku'] = 'https://rsa-encrypter.herokuapp.com';
 
       $(window).ready(function() {
         $.ajax({
-          url: env['xampp'] + "/src/ViewModel.php?getPrimes",
+          url: env['heroku'] + "/src/ViewModel.php?getPrimes",
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -142,7 +143,7 @@ if (!isset($_SESSION['RSA'])) {
         var attrName = $(this).attr('name'),
           val = $(this).val();
         $.ajax({
-          url: env['xampp'] + "/src/ViewModel.php?" + attrName + "=" + val,
+          url: env['heroku'] + "/src/ViewModel.php?" + attrName + "=" + val,
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -154,7 +155,7 @@ if (!isset($_SESSION['RSA'])) {
       $('#genNZ').click(function(e) {
         e.preventDefault();
         $.ajax({
-          url: env['xampp'] + "/src/ViewModel.php?genNZ  ",
+          url: env['heroku'] + "/src/ViewModel.php?genNZ  ",
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -166,7 +167,7 @@ if (!isset($_SESSION['RSA'])) {
       $('#genD').click(function(e) {
         e.preventDefault();
         $.ajax({
-          url: env['xampp'] + "/src/ViewModel.php?genD  ",
+          url: env['heroku'] + "/src/ViewModel.php?genD  ",
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -177,7 +178,7 @@ if (!isset($_SESSION['RSA'])) {
       $('#encrypt').click(function(e) {
         e.preventDefault();
         $.ajax({
-          url: env['xampp'] + "/src/ViewModel.php?encryptMessage=" + $('textarea#messageToCrypt').val(),
+          url: env['heroku'] + "/src/ViewModel.php?encryptMessage=" + $('textarea#messageToCrypt').val(),
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -188,7 +189,7 @@ if (!isset($_SESSION['RSA'])) {
       $('#decrypt').click(function(e) {
         e.preventDefault();
         $.ajax({
-          url: env['xampp'] + "/src/ViewModel.php?decryptMessage=" + $('textarea#messageToDecrypt').val(),
+          url: env['heroku'] + "/src/ViewModel.php?decryptMessage=" + $('textarea#messageToDecrypt').val(),
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -199,7 +200,7 @@ if (!isset($_SESSION['RSA'])) {
       $('#clean').click(function(e) {
         e.preventDefault();
         $.ajax({
-          url: env['xampp'] + "/src/ViewModel.php?clean  ",
+          url: env['heroku'] + "/src/ViewModel.php?clean  ",
           method: 'GET',
           dataType: 'json',
           success: function(response) {

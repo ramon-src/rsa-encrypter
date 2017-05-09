@@ -142,7 +142,7 @@ if (!isset($_SESSION['RSA'])) {
 
       $(window).ready(function() {
         $.ajax({
-          url: env['linux'] + "/src/ViewModel.php?getPrimes",
+          url: env['heroku'] + "/src/ViewModel.php?getPrimes",
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -163,7 +163,7 @@ if (!isset($_SESSION['RSA'])) {
         var attrName = $(this).attr('name'),
           val = $(this).val();
         $.ajax({
-          url: env['linux'] + "/src/ViewModel.php?" + attrName + "=" + val,
+          url: env['heroku'] + "/src/ViewModel.php?" + attrName + "=" + val,
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -175,7 +175,7 @@ if (!isset($_SESSION['RSA'])) {
       $('#genNZ').click(function(e) {
         e.preventDefault();
         $.ajax({
-          url: env['linux'] + "/src/ViewModel.php?genNZ  ",
+          url: env['heroku'] + "/src/ViewModel.php?genNZ  ",
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -187,7 +187,7 @@ if (!isset($_SESSION['RSA'])) {
       $('#genD').click(function(e) {
         e.preventDefault();
         $.ajax({
-          url: env['linux'] + "/src/ViewModel.php?genD  ",
+          url: env['heroku'] + "/src/ViewModel.php?genD  ",
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -203,7 +203,7 @@ if (!isset($_SESSION['RSA'])) {
       $('#encrypt').click(function(e) {
         e.preventDefault();
         $.ajax({
-          url: env['linux'] + "/src/ViewModel.php?encryptMessage=" + $('textarea#messageToCrypt').val(),
+          url: env['heroku'] + "/src/ViewModel.php?encryptMessage=" + $('textarea#messageToCrypt').val(),
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -214,7 +214,7 @@ if (!isset($_SESSION['RSA'])) {
       $('#decrypt').click(function(e) {
         e.preventDefault();
         $.ajax({
-          url: env['linux'] + "/src/ViewModel.php?decryptMessage=" + $('textarea#messageToDecrypt').val(),
+          url: env['heroku'] + "/src/ViewModel.php?decryptMessage=" + $('textarea#messageToDecrypt').val(),
           method: 'GET',
           dataType: 'json',
           success: function(response) {
@@ -225,7 +225,7 @@ if (!isset($_SESSION['RSA'])) {
       $('#clean').click(function(e) {
         e.preventDefault();
         $.ajax({
-          url: env['linux'] + "/src/ViewModel.php?clean  ",
+          url: env['heroku'] + "/src/ViewModel.php?clean  ",
           method: 'GET',
           dataType: 'json',
           success: function(response) {

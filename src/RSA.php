@@ -198,11 +198,11 @@ class RSA
             }
         }
     }
-
+    
     public function getPrimes(){
         return json_encode(Math::generatePrimes());
     }
-
+    
     private function parseSessionToProperties(array $session)
     {
         foreach ($session as $key => $value) {
@@ -214,6 +214,6 @@ class RSA
     public
     function getKeyPair()
     {
-        return json_encode(['public_key' => [$this->e, $this->n], 'private_key' => [$this->d, $this->n]]);
+        return json_encode(['public_key' => ['e'=> $this->e, 'n'=> $this->n], 'private_key' => ['d'=> $this->d, 'n'=> $this->n]]);
     }
 }
